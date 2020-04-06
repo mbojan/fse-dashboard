@@ -14,8 +14,6 @@ suppressPackageStartupMessages({
   library(dplyr)
   library(leaflet)
 })
-
-theme_set(theme_bw())
 ```
 
 
