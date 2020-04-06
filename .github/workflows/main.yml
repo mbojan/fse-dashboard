@@ -9,6 +9,7 @@ on:
 jobs:
   render: 
     name: Render dashboard
+    runs-on: linux
     steps:
       - uses: actions/checkout@v2
       - uses: r-lib/actions/setup-r@v1
