@@ -12,8 +12,6 @@ editor_options:
 suppressPackageStartupMessages({
   library(flexdashboard)
   library(dplyr)
-  library(tidyr)
-  library(ggplot2)
   library(leaflet)
 })
 
