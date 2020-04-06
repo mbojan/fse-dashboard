@@ -1,9 +1,11 @@
+name: Make-dashboard
+
+
 on:
   push:
     paths:
       - fse-dashboard.Rmd
 
-name: Make dashboard
 
 jobs:
   render: 
