@@ -21,3 +21,7 @@ jobs:
         shell: Rscript {0}
       - name: Render dashboard
         run: make 
+      - name: Publish to Netlify
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SIDE_ID }}
