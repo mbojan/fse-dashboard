@@ -24,7 +24,7 @@ theme_set(theme_bw())
 ```{r data}
 # Fetch data and save locally
 dat <- data.frame(
-  lon=c(50, -50), 
+  lon=c(50, -50) , 
   lat=c(-50, 50),
   label = letters[1:2],
   stringsAsFactors = FALSE
