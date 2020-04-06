@@ -1,6 +1,4 @@
-files=fse-dashboard
 
-publish: public/$(files:=.html)
 
-public/%.html: %.Rmd
-	Rscript -e 'rmarkdown::render("$<", output_dir="$(dir $@)")'
+public/index.html: fse-dashboard.Rmd
+	Rscript -e 'rmarkdown::render("$<", output_dir="$(dir $@)", output_file="$(notdir $@)")'
