@@ -1,0 +1,45 @@
+---
+title: "FSE Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+suppressPackageStartupMessages({
+  library(flexdashboard)
+  library(dplyr)
+  library(tidyr)
+  library(ggplot2)
+  library(leaflet)
+})
+
+theme_set(theme_bw())
+```
+
+
+```{r data}
+# Fetch data and save locally
+dat <- data.frame(
+  lon=c(50, -50), 
+  lat=c(-50, 50),
+  label = letters[1:2],
+  stringsAsFactors = FALSE
+)
+fetched_at <- Sys.time()
+```
+
+Data fetched on `r format(fetched_at, tz="UTC")` UTC.
+
+```{r map}
+dat %>%
+  mutate(
+    popup = label
+  ) %>%
+  leaflet() %>%
+  addTiles() %>%
+  addMarkers(lng = ~lon, lat = ~lat, label = ~popup)
+```
