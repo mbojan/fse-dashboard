@@ -21,7 +21,7 @@ jobs:
         shell: Rscript {0}
       - name: Render dashboard
         run: make 
-      - name: Publish to Netlify
+      - name: Publish to Netlify now
         uses: netlify/actions/build@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
