@@ -22,6 +22,8 @@ jobs:
       - name: Render dashboard
         run: make 
       - name: Publish to Netlify
+        uses: netlify/actions/build@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SIDE_ID }}
+          NETLIFY_DIR: public
