@@ -1,0 +1,9 @@
+Package: fsedashboard
+Type: Package
+Title: FSE Dashboard
+Version: 0.1
+Author: mbojan
+Maintainer: mbojan
+Imports: flexdashboard, dplyr, tidyr, ggplot2, leaflet
+Description: FSE dashboard.
+License: GPL-2
