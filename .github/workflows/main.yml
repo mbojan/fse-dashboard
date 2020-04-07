@@ -4,6 +4,8 @@ name: Make
 on:
   push:
     branches: [master]
+  schedule: 
+    - cron '30 22 * * *' 
 
 
 jobs:
