@@ -4,7 +4,7 @@ Title: FSE Dashboard
 Version: 0.1
 Author: mbojan
 Maintainer: mbojan
-Imports: flexdashboard, dplyr, leaflet
+Imports: flexdashboard, dplyr, leaflet, fse
 Description: FSE dashboard.
 License: GPL-2
 Remotes: github::rfse/fse
