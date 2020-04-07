@@ -7,3 +7,4 @@ Maintainer: mbojan
 Imports: flexdashboard, dplyr, leaflet
 Description: FSE dashboard.
 License: GPL-2
+Remotes: github::rfse/fse
