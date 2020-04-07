@@ -9,7 +9,7 @@ on:
 jobs:
   render: 
     name: Render dashboard
-    runs-on: windows
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: r-lib/actions/setup-r@v1
@@ -21,9 +21,10 @@ jobs:
         shell: Rscript {0}
       - name: Render dashboard
         run: make 
-      - name: Publish to Netlify now
-        uses: netlify/actions/build@master
+      - name: Deploy to Netlify
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=public --functions=functions
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-          NETLIFY_DIR: public
+          NETLIFY_SITE_ID: {{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: {{ secrets.NETLIFY_AUTH_TOKEN }}
