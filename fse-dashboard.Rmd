@@ -1,5 +1,6 @@
 ---
-title: "FSE Dashboard"
+title: "FSE Dashboard -- `r format(fetched_at <- Sys.time(), tz='UTC')` UTC"
+subtitle: "A subtitle"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
@@ -17,6 +18,11 @@ suppressPackageStartupMessages({
 ```
 
 
+
+
+
+# FBOs for sale
+
 ```{r data}
 # Fetch data and save locally
 dat <- data.frame(
@@ -25,10 +31,7 @@ dat <- data.frame(
   label = letters[1:2],
   stringsAsFactors = FALSE
 )
-fetched_at <- Sys.time()
 ```
-
-Data fetched on `r format(fetched_at, tz="UTC")` UTC.
 
 ```{r map}
 dat %>%
@@ -39,3 +42,22 @@ dat %>%
   addTiles() %>%
   addMarkers(lng = ~lon, lat = ~lat, label = ~popup)
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# About
+
+FSE data is fetched roughly once every 24 hours.
+
+Submit issues to ...
