@@ -37,7 +37,7 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@v1
       - name: Install dependencies
         run: |
-          install.packages(c("remotes", "rmarkdown"))
+          install.packages(c('remotes', 'rmarkdown'))
           remotes::install_deps(dependencies = NA)
         shell: Rscript {0}
       - name: Render dashboard
