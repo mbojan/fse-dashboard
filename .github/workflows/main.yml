@@ -44,3 +44,5 @@ jobs:
         shell: Rscript {0}
       - name: Render dashboard
         run: make 
+        env:
+          FSE_SERVICE_KEY: ${{ secrets.FSE_SERVICE_KEY }}
