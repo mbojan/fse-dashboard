@@ -33,7 +33,7 @@ fbos <- data.frame(
 )
 ```
 
-```{r fbo-sale-data-fetch, eval=FALSE}
+```{r fbo-sale-data-fetch, eval=TRUE}
 fse::fse_fbo_for_sale() %>%
   saveRDS(file="fbos.rds")
 ```
