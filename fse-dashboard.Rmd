@@ -1,5 +1,5 @@
 ---
-title: "FSE Dashboard -- `r format(fetched_at <- Sys.time(), tz='UTC')` UTC"
+title: "FSE Dashboard"
 subtitle: "A subtitle"
 output: 
   flexdashboard::flex_dashboard:
@@ -16,6 +16,8 @@ suppressPackageStartupMessages({
   library(dplyr)
   library(leaflet)
 })
+
+fetched_at <- Sys.time()
 ```
 
 
@@ -33,7 +35,7 @@ fbos <- data.frame(
 )
 ```
 
-```{r fbo-sale-data-fetch, eval=TRUE}
+```{r fbo-sale-data-fetch, eval=FALSE}
 fse::fse_fbo_for_sale() %>%
   saveRDS(file="fbos.rds")
 ```
@@ -54,15 +56,28 @@ readRDS("fbos.rds") %>%
   ) -> fbos
 ```
 
-
 ```{r map-fbo-for-sale}
+ramp <- scales::gradient_n_pal(c("blue", "red"))
+marker_color <- function(fbos) {
+  ramp( scales::rescale(log(fbos$SellPrice), 0:1))
+}
+
+ramp2 <- colorNumeric(c("blue", "red"), domain=range(fbos$SellPrice))
+
+icons <- awesomeIcons(
+  icon = "ios-close",
+  library = "ion",
+  iconColor = ramp2(fbos$SellPrice)
+)
+
 fbos %>%
   leaflet() %>%
   addTiles() %>%
   addMarkers(
     lng = ~lon, 
     lat = ~lat, 
-    popup = ~popup
+    popup = ~popup,
+    icon = icons
   )
 ```
 
@@ -93,6 +108,6 @@ head(icao_data)
 
 # About
 
-FSE data is fetched roughly once every 24 hours.
+FSE data is fetched once every 24 hours. Present snapshot from **`r format(fetched_at, tz="UTC")` UTC**.
 
 Submit issues to ...
