@@ -2,6 +2,7 @@
 title: "FSE Dashboard"
 output: 
   flexdashboard::flex_dashboard:
+    storyboard: true
     orientation: columns
     vertical_layout: fill
     includes:
@@ -25,7 +26,7 @@ suppressPackageStartupMessages({
 
 # FBOs for sale
 
-```{r fbo-sale-data-test, eval=FALSE}
+```{r fbosale-data-test, eval=FALSE}
 fbos <- data.frame(
   lon=c(50, -50) , 
   lat=c(-50, 50),
@@ -34,12 +35,12 @@ fbos <- data.frame(
 )
 ```
 
-```{r fbo-sale-data-fetch, eval=!file.exists("fbos.rds")}
+```{r fbosale-data-fetch, eval=!file.exists("fbos.rds")}
 fse::fse_fbo_for_sale() %>%
   saveRDS(file="fbos.rds")
 ```
 
-```{r fbo-sale-data-load}
+```{r fbosale-data-load}
 readRDS("fbos.rds") %>%
   left_join(icao_data, by=c("Icao"="icao")) %>%
   as_tibble() %>%
@@ -56,7 +57,7 @@ readRDS("fbos.rds") %>%
 ```
 
 
-```{r map-fbo-for-sale}
+```{r fbosale-map}
 fbos %>%
   leaflet() %>%
   addTiles() %>%
@@ -69,18 +70,44 @@ fbos %>%
 
 
 
-<!--
-# FSE test
 
-```{r fse-test}
-head(icao_data)
+
+
+
+
+
+# All-In Q400 {.storyboard}
+
+```{r allin-q400-fetch, eval=!file.exists("allin-q400.rds")}
+fse_aircraft_by_makemodel("Bombardier Dash-8 Q400") %>%
+  filter(Location != "In Flight") -> q400
+fse_icao_jobs_from(unique(q400$Location)) %>%
+  inner_join(q400, by=c("AircraftId"="SerialNumber")) %>%
+  saveRDS("allin-q400.rds")
 ```
--->
+
+```{r allin-q400-load}
+readRDS("allin-q400.rds") -> q400
+```
 
 
+### Table
+
+```{r results="asis"}
+q400 %>%
+  transmute(
+    Pay,
+    From = fse_link_icao(FromIcao), 
+    To = fse_link_icao(ToIcao), 
+    What = paste(Amount, Commodity),
+    Expires
+  ) %>%
+  arrange(desc(Pay)) %>%
+  DT::datatable()
+```
 
 
-
+### Map
 
 
 
