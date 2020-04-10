@@ -107,17 +107,6 @@ q400 %>%
 # All-In Q400 (Map)
 
 ```{r allin-q400-map}
-f <- function(from_lon, from_lat, to_lon, to_lat, ...) {
-  tibble::tibble(
-    path = list(geosphere::gcIntermediate(
-      c(from_lon, from_lat), c(to_lon, to_lat),
-      n = 3,
-      addStartEnd = FALSE,
-      sp = TRUE
-    )
-  ))
-}
-
 q400 %>%
   left_join(
     icao_data %>%

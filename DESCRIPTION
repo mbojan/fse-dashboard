@@ -1,10 +1,10 @@
 Package: fsedashboard
 Type: Package
 Title: FSE Dashboard
-Version: 0.1
+Version: 1.0
 Author: mbojan
 Maintainer: mbojan
-Imports: flexdashboard, dplyr, leaflet, fse
+Imports: flexdashboard, dplyr, leaflet, fse, geosphere, DT
 Description: FSE dashboard.
 License: GPL-2
 Remotes: github::rfse/fse
