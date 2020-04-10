@@ -1,6 +1,5 @@
 ---
-title: "FSE Dashboard -- `r format(fetched_at <- Sys.time(), tz='UTC')` UTC"
-subtitle: "A subtitle"
+title: "FSE Dashboard"
 output: 
   flexdashboard::flex_dashboard:
     orientation: columns
@@ -35,7 +34,7 @@ fbos <- data.frame(
 )
 ```
 
-```{r fbo-sale-data-fetch, eval=TRUE}
+```{r fbo-sale-data-fetch, eval=!file.exists("fbos.rds")}
 fse::fse_fbo_for_sale() %>%
   saveRDS(file="fbos.rds")
 ```
@@ -95,6 +94,4 @@ head(icao_data)
 
 # About
 
-FSE data is fetched roughly once every 24 hours.
-
-Submit issues to ...
+FSE data is fetched roughly once every 24 hours. Last fetch on **`r format(fetched_at <- Sys.time(), tz='UTC')`** UTC.
