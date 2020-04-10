@@ -76,7 +76,7 @@ fbos %>%
 
 
 
-# All-In Q400 {.storyboard}
+# All-In Q400 (Table)
 
 ```{r allin-q400-fetch, eval=!file.exists("allin-q400.rds")}
 fse_aircraft_by_makemodel("Bombardier Dash-8 Q400") %>%
@@ -90,25 +90,76 @@ fse_icao_jobs_from(unique(q400$Location)) %>%
 readRDS("allin-q400.rds") -> q400
 ```
 
-
-### Table
-
-```{r results="asis"}
+```{r allin-q400-table}
 q400 %>%
   transmute(
     Pay,
-    From = fse_link_icao(FromIcao), 
-    To = fse_link_icao(ToIcao), 
+    From = fse_link_icao(FromIcao) %>% to_html(), 
+    To = fse_link_icao(ToIcao) %>% to_html(), 
     What = paste(Amount, Commodity),
     Expires
   ) %>%
   arrange(desc(Pay)) %>%
-  DT::datatable()
+  DT::datatable(escape = FALSE)
 ```
 
 
-### Map
+# All-In Q400 (Map)
 
+```{r allin-q400-map}
+f <- function(from_lon, from_lat, to_lon, to_lat, ...) {
+  tibble::tibble(
+    path = list(geosphere::gcIntermediate(
+      c(from_lon, from_lat), c(to_lon, to_lat),
+      n = 3,
+      addStartEnd = FALSE,
+      sp = TRUE
+    )
+  ))
+}
+
+q400 %>%
+  left_join(
+    icao_data %>%
+      select(
+        FromIcao = icao,
+        from_lon = lon,
+        from_lat = lat
+      ),
+    by = "FromIcao"
+  ) %>%
+  left_join(
+    icao_data %>%
+      select(
+        ToIcao = icao,
+        to_lon = lon,
+        to_lat = lat
+      ),
+    by = "ToIcao"
+  ) %>%
+  mutate(
+    label = paste0(
+      FromIcao, "-", ToIcao,
+      ", ",
+      "v$", Pay
+    )
+  ) -> z
+
+z %>%
+  with(
+    geosphere::gcIntermediate(
+      cbind(from_lon, from_lat), cbind(to_lon, to_lat),
+      n = 5,
+      addStartEnd = TRUE,
+      sp = TRUE
+    )
+  ) -> pths
+
+pths %>%
+  leaflet() %>%
+  addTiles() %>%
+  addPolylines(label=z$label)
+```
 
 
 
