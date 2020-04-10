@@ -76,8 +76,6 @@ fbos %>%
 
 
 
-# All-In Q400 (Table)
-
 ```{r allin-q400-fetch, eval=!file.exists("allin-q400.rds")}
 fse_aircraft_by_makemodel("Bombardier Dash-8 Q400") %>%
   filter(Location != "In Flight") -> q400
@@ -90,7 +88,7 @@ fse_icao_jobs_from(unique(q400$Location)) %>%
 readRDS("allin-q400.rds") -> q400
 ```
 
-```{r allin-q400-table}
+```{r allin-q400-table, eval=FALSE}
 q400 %>%
   transmute(
     Pay,
@@ -104,7 +102,7 @@ q400 %>%
 ```
 
 
-# All-In Q400 (Map)
+# All-In Q400
 
 ```{r allin-q400-map}
 q400 %>%
@@ -127,10 +125,11 @@ q400 %>%
     by = "ToIcao"
   ) %>%
   mutate(
-    label = paste0(
-      FromIcao, "-", ToIcao,
-      ", ",
-      "v$", Pay
+    label = paste(
+      paste0(FromIcao, "-", ToIcao),
+      paste0("v$", Pay),
+      to_html(fse_link_icao(FromIcao)),
+      sep = "<br/>"
     )
   ) -> z
 
@@ -144,10 +143,22 @@ z %>%
     )
   ) -> pths
 
+kol <- scales::gradient_n_pal(
+  c("blue", "red")
+)( scales::rescale(z$Pay, 0:1) )
+  
+
 pths %>%
   leaflet() %>%
   addTiles() %>%
-  addPolylines(label=z$label)
+  addPolylines(popup=z$label, color = kol) %>%
+  addLegend(
+    colors = c("blue", "red"), 
+    labels = c( 
+      paste0("Min (v$", min(z$Pay), ")"),
+      paste0("Max (v$", max(z$Pay), ")")
+    )
+  )
 ```
 
 
