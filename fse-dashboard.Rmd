@@ -79,6 +79,7 @@ fbos %>%
 ```{r allin-q400-fetch, eval=!file.exists("allin-q400.rds")}
 fse_aircraft_by_makemodel("Bombardier Dash-8 Q400") %>%
   filter(Location != "In Flight") -> q400
+Sys.sleep(1.2)
 fse_icao_jobs_from(unique(q400$Location)) %>%
   inner_join(q400, by=c("AircraftId"="SerialNumber")) %>%
   saveRDS("allin-q400.rds")
