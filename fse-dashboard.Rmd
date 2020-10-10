@@ -95,3 +95,5 @@ head(icao_data)
 # About
 
 FSE data is fetched roughly once every 24 hours. Last fetch on **`r format(fetched_at <- Sys.time(), tz='UTC')`** UTC.
+
+The dashboard is implemented using R and `fse` package https://github.com/rfse/fse.
