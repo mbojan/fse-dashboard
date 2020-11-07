@@ -76,6 +76,19 @@ fbos %>%
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+# All-In Q400 (table)
+
 ```{r allin-q400-fetch, eval=!file.exists("allin-q400.rds")}
 fse_aircraft_by_makemodel("Bombardier Dash-8 Q400") %>%
   filter(Location != "In Flight") -> q400
@@ -89,21 +102,22 @@ fse_icao_jobs_from(unique(q400$Location)) %>%
 readRDS("allin-q400.rds") -> q400
 ```
 
-```{r allin-q400-table, eval=FALSE}
+```{r allin-q400-table}
 q400 %>%
   transmute(
     Pay,
-    From = fse_link_icao(FromIcao) %>% to_html(), 
-    To = fse_link_icao(ToIcao) %>% to_html(), 
+    From = FromIcao, 
+    To = ToIcao, 
     What = paste(Amount, Commodity),
+    Distance = round(purrr::map2_dbl(From, To, ~icao_distance(c(.x, .y)))),
+    `vdol / Distance`  = round(Pay / Distance, 1),
     Expires
   ) %>%
-  arrange(desc(Pay)) %>%
-  DT::datatable(escape = FALSE)
+  arrange(desc(`vdol / Distance`)) %>%
+  DT::datatable(escape = FALSE, options = list(paging=FALSE))
 ```
 
-
-# All-In Q400
+# All-In Q400 (map)
 
 ```{r allin-q400-map}
 q400 %>%
@@ -129,7 +143,6 @@ q400 %>%
     label = paste(
       paste0(FromIcao, "-", ToIcao),
       paste0("v$", Pay),
-      to_html(fse_link_icao(FromIcao)),
       sep = "<br/>"
     )
   ) -> z
