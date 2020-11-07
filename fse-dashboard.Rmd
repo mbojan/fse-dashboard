@@ -99,18 +99,27 @@ fse_icao_jobs_from(unique(q400$Location)) %>%
 ```
 
 ```{r allin-q400-load}
-readRDS("allin-q400.rds") -> q400
-```
-
-```{r allin-q400-table}
-q400 %>%
-  transmute(
+readRDS("allin-q400.rds") %>%
+  mutate(
     Pay,
     From = FromIcao, 
     To = ToIcao, 
     What = paste(Amount, Commodity),
     Distance = round(purrr::map2_dbl(From, To, ~icao_distance(c(.x, .y)))),
     `vdol / Distance`  = round(Pay / Distance, 1),
+    Expires
+  ) -> q400
+```
+
+```{r allin-q400-table}
+q400 %>%
+  select(
+    Pay,
+    From, 
+    To, 
+    What,
+    Distance,
+    `vdol / Distance`,
     Expires
   ) %>%
   arrange(desc(`vdol / Distance`)) %>%
@@ -143,6 +152,7 @@ q400 %>%
     label = paste(
       paste0(FromIcao, "-", ToIcao),
       paste0("v$", Pay),
+      paste0(Distance, " nm"),
       sep = "<br/>"
     )
   ) -> z
