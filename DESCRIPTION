@@ -4,7 +4,7 @@ Title: FSE Dashboard
 Version: 1.0
 Author: mbojan
 Maintainer: mbojan
-Imports: flexdashboard, dplyr, leaflet, fse, geosphere, DT, purrr
+Imports: flexdashboard, dplyr, leaflet, fse, geosphere, DT, purrr, sf, viridisLite
 Description: FSE dashboard.
 License: GPL-2
 Remotes: github::rfse/fse

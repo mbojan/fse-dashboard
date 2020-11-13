@@ -17,6 +17,8 @@ suppressPackageStartupMessages({
   library(flexdashboard)
   library(dplyr)
   library(leaflet)
+  library(sf)
+  library(viridisLite)
 })
 ```
 
@@ -163,25 +165,36 @@ z %>%
       cbind(from_lon, from_lat), cbind(to_lon, to_lat),
       n = 5,
       addStartEnd = TRUE,
-      sp = TRUE
+      sp = FALSE
     )
-  ) -> pths
+  ) -> paths
 
-kol <- scales::gradient_n_pal(
-  c("blue", "red")
-)( scales::rescale(z$Pay, 0:1) )
-  
 
-pths %>%
+s <- st_sf(
+  data.frame(
+    pay = z$Pay, 
+    label = z$label
+  ), 
+  geometry = st_sfc(lapply(paths, st_linestring), crs=4326)
+)
+
+
+pal <- colorBin(
+  "inferno", 
+  domain = s$pay
+  # bins = bins
+)
+
+s %>%
   leaflet() %>%
   addTiles() %>%
-  addPolylines(popup=z$label, color = kol) %>%
+  addPolylines(
+    color = ~ pal(pay),
+    popup = ~label
+  ) %>%
   addLegend(
-    colors = c("blue", "red"), 
-    labels = c( 
-      paste0("Min (v$", min(z$Pay), ")"),
-      paste0("Max (v$", max(z$Pay), ")")
-    )
+    pal = pal,
+    values = ~pay
   )
 ```
 
