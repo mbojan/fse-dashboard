@@ -7,5 +7,5 @@ Maintainer: mbojan
 Imports: flexdashboard, dplyr, leaflet, fse, geosphere, DT, purrr, sf, viridisLite
 Remotes: rfse/fse
 Description: FSE dashboard.
-License: GPL-2
+License: GPL-3
 
