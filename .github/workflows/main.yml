@@ -23,6 +23,7 @@ jobs:
         run: |
           install.packages(c("remotes", "rmarkdown"))
           remotes::install_deps(dependencies = TRUE)
+          remotes::install_github("rfse/fse")
         shell: Rscript {0}
       - name: Render dashboard
         run: make 
