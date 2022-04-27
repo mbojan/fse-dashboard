@@ -1,5 +1,5 @@
 ---
-title: "FSE Dashboard"
+title: "FSE All-In Dashboard"
 output: 
   flexdashboard::flex_dashboard:
     storyboard: true
