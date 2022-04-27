@@ -5,7 +5,7 @@ Version: 1.0
 Author: mbojan
 Maintainer: mbojan
 Imports: flexdashboard, dplyr, leaflet, fse, geosphere, DT, purrr, sf, viridisLite
-Remotes: rfse/fse
+Remotes: github::rfse/fse@master
 Description: FSE dashboard.
 License: GPL-3
 
