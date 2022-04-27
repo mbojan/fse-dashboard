@@ -22,13 +22,7 @@ jobs:
       - name: Install system dependencies
         run: sudo apt-get install -y libcurl4-openssl-dev libudunits2-dev libgdal-dev libproj-dev libgeos-dev
       - name: Install R dependencies
-        run: |
-          install.packages(c("remotes", "rmarkdown"))
-          remotes::install_deps(dependencies = TRUE)
-          remotes::install_github("rfse/fse")
-        shell: Rscript {0}
-      - name: Cache R packages
-        uses: r-lib/actions/cache-r@master
+        uses: r-lib/actions/setup-r-dependencies@v2
       - name: Render dashboard
         run: make
         env:

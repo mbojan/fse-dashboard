@@ -4,7 +4,9 @@ Title: FSE All-in Dashboard
 Version: 1.0
 Author: mbojan
 Maintainer: mbojan
-Imports: flexdashboard, dplyr, leaflet, fse, geosphere, DT, purrr, sf, viridisLite
+Imports: flexdashboard, dplyr, leaflet, fse, geosphere, DT, purrr, sf, viridisLite,
+  rmarkdown
+Remotes: github::rfse/fse@master
 Description: A dashboard facilitating picking All-In jobs.
 License: GPL-3
 
