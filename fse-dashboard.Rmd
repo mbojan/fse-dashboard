@@ -26,50 +26,6 @@ suppressPackageStartupMessages({
 
 
 
-# FBOs for sale
-
-```{r fbosale-data-test, eval=FALSE}
-fbos <- data.frame(
-  lon=c(50, -50) , 
-  lat=c(-50, 50),
-  label = letters[1:2],
-  stringsAsFactors = FALSE
-)
-```
-
-```{r fbosale-data-fetch, eval=!file.exists("fbos.rds")}
-fse::fse_fbo_for_sale() %>%
-  saveRDS(file="fbos.rds")
-```
-
-```{r fbosale-data-load}
-readRDS("fbos.rds") %>%
-  left_join(icao_data, by=c("Icao"="icao")) %>%
-  as_tibble() %>%
-  mutate(
-    popup = paste(
-      Icao, 
-      Airport, 
-      paste0("Lots: ", Lots), 
-      paste0("Gates: ", Gates), 
-      paste0("Price: ", format(SellPrice, scientific = FALSE)),
-      sep = "<br/>"
-    )
-  ) -> fbos
-```
-
-
-```{r fbosale-map}
-fbos %>%
-  leaflet() %>%
-  addTiles() %>%
-  addMarkers(
-    lng = ~lon, 
-    lat = ~lat, 
-    popup = ~popup
-  )
-```
-
 
 
 
@@ -115,10 +71,10 @@ readRDS("allin-q400.rds") %>%
 
 ```{r allin-q400-table}
 q400 %>%
-  select(
+  transmute(
     Pay,
-    From, 
-    To, 
+    From = glue::glue("<a href='https://server.fseconomy.net/airport.jsp?icao={From}'>{From}</a>"), 
+    To = glue::glue("<a href='https://server.fseconomy.net/airport.jsp?icao={To}'>{To}</a>"), 
     What,
     Distance,
     `vdol / Distance`,
