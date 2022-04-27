@@ -27,6 +27,8 @@ jobs:
           remotes::install_deps(dependencies = TRUE)
           remotes::install_github("rfse/fse")
         shell: Rscript {0}
+      - name: Cache R packages
+        uses: r-lib/actions/cache-r@master
       - name: Render dashboard
         run: make
         env:
