@@ -20,6 +20,12 @@ suppressPackageStartupMessages({
   library(sf)
   library(viridisLite)
 })
+
+airport_url <- function(icao) {
+  glue::glue(
+    "<a href='https://server.fseconomy.net/airport.jsp?icao={icao}' target='_blank'>{icao}</a>"
+  )
+}
 ```
 
 
@@ -73,8 +79,8 @@ readRDS("allin-q400.rds") %>%
 q400 %>%
   transmute(
     Pay,
-    From = glue::glue("<a href='https://server.fseconomy.net/airport.jsp?icao={From}'>{From}</a>"), 
-    To = glue::glue("<a href='https://server.fseconomy.net/airport.jsp?icao={To}'>{To}</a>"), 
+    From = airport_url(From), 
+    To = airport_url(To), 
     What,
     Distance,
     `vdol / Distance`,
@@ -83,6 +89,12 @@ q400 %>%
   arrange(desc(`vdol / Distance`)) %>%
   DT::datatable(escape = FALSE, options = list(paging=FALSE))
 ```
+
+
+
+
+
+
 
 # All-In Q400 (map)
 
@@ -108,7 +120,7 @@ q400 %>%
   ) %>%
   mutate(
     label = paste(
-      paste0(FromIcao, "-", ToIcao),
+      paste0(airport_url(FromIcao), "-", airport_url(ToIcao)),
       paste0("v$", Pay),
       paste0(Distance, " nm"),
       sep = "<br/>"
